@@ -16,6 +16,9 @@ def valid_add(polygon,x,y):
         if intersect(polygon[i],polygon[i+1],polygon[-1],(x,y)):
             if not ((x,y) == polygon[i] or (x,y) == polygon[i+1]):
                 return False
+    for i in range(1,len(polygon)):
+        if (x,y)== polygon[i]:
+            return False
     return True
 
 #this method takes a list of points and determines whether it is counterclockwise or not

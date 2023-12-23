@@ -101,11 +101,14 @@ def on_mouse_drag(x,y,dx,dy,button,modifiers):
             hot_point = activate_point(polygon,x,y)
             polygon[hot_index] = (hot_point[0]+dx,hot_point[1] + dy)
             if stage == 3 or stage == 7:
-                path_tree= shortest_path_tree(polygon,polygon[active_point])
-                if stage == 7:
-                    addEdges(polygon,path_tree)
-                arrows[:] = []
-                arrows.extend(path_tree_arrows(path_tree))
+                try:
+                    path_tree= shortest_path_tree(polygon,polygon[active_point])
+                    if stage == 7:
+                        addEdges(polygon,path_tree)
+                    arrows[:] = []
+                    arrows.extend(path_tree_arrows(path_tree)) 
+                except:
+                    stage = stage                             
             if stage == 5:
                 centroids[:] = []
                 for i in active_point:
@@ -140,7 +143,9 @@ def on_key_press(symbol,modifiers):
         stage = 0
     if symbol==key.ENTER:
         if len(polygon) >=3 and valid_add(polygon,*polygon[0]):
-            label.text = "Press T to create a shortest path tree on the polygon!"
+            label.text = "Press T to create a shortest path tree on the polygon\n"\
+                          +"Press E to create a shortest path tree including edges\n"\
+                          +"Press P to find the shortest path between two points"
             lines.append(shapes.Line(*polygon[0],*polygon[-1],width=2,color=(100,100,100)))
             makeCCW(polygon)
             stage = 1
