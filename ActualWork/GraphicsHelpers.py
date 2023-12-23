@@ -7,24 +7,27 @@ def drawArrow(x1,y1,x2,y2):
     dx = x2-x1
     dy = y2-y1
     length = (dx**2+dy**2)**.5
-    line=shapes.Line(x1,y1,x2,y2,width=3,color=(200,100,100))
-    # delta = 5
-    #delta = max(5/length,(dx**2+dy**2)**.5/(15*length))
-    delta = 15/length
-    triangle = shapes.Triangle(
-         x2-dx/100,y2-dy/100,x2-delta*dx-delta*dy,y2-delta*dy+delta*dx,x2-delta*dx+delta*dy,
-         y2-delta*dy-delta*dx,color=(200,100,100))
-    # triangle = shapes.Triangle(
-    #     x2+dx/25,y2+dy/25,x2-delta*dx-delta*dy,y2-delta*dy+delta*dx,x2-delta*dx+delta*dy,
-    #     y2-delta*dy-delta*dx,color=(100,100,200))
-    line.draw()
-    triangle.draw()
-    return [line,triangle]
+    if length!= 0:
+        line=shapes.Line(x1,y1,x2,y2,width=3,color=(200,100,100))
+        # delta = 5
+        #delta = max(5/length,(dx**2+dy**2)**.5/(15*length))
+        delta = 15/length
+        triangle = shapes.Triangle(
+            x2-dx/100,y2-dy/100,x2-delta*dx-delta*dy,y2-delta*dy+delta*dx,x2-delta*dx+delta*dy,
+            y2-delta*dy-delta*dx,color=(200,100,100))
+        # triangle = shapes.Triangle(
+        #     x2+dx/25,y2+dy/25,x2-delta*dx-delta*dy,y2-delta*dy+delta*dx,x2-delta*dx+delta*dy,
+        #     y2-delta*dy-delta*dx,color=(100,100,200))
+        line.draw()
+        triangle.draw()
+        return [line,triangle]
+    else:
+        return []
 
 def path_subtree_list(head,arrow_list):
     for edge in head.edgeList:
         arrow_list.extend(drawArrow(*head.cds(),*proj(edge.v1.cds(),edge.v2.cds(),head.cds())))
-        print("The projected point is", proj(edge.v1.cds(),edge.v2.cds(),head.cds()))
+        #print("The projected point is", proj(edge.v1.cds(),edge.v2.cds(),head.cds()))
     for child in head.getChildren():
         arrow_list.extend(drawArrow(*head.cds(),*child.cds()))
         path_subtree_list(child,arrow_list)
@@ -36,6 +39,12 @@ def path_tree_arrows(path_tree):
     root = path_tree.get_root()
     path_subtree_list(root,arrow_list)
     return arrow_list
+
+def vertex_list_arrows(list):
+    final_list = []
+    for i in range(len(list)-1):
+        final_list.extend(drawArrow(*list[i],*list[i+1]))
+    return final_list
 
 def activate_point(polygon,x,y):
     try:
@@ -63,5 +72,5 @@ def create_polygon_lines(polygon,stage):
 def create_polygon_points(polygon):
     points = []
     for point in polygon:
-        points.append(shapes.Circle(*point,radius=5,color = (100,100,100)))
+        points.append(shapes.Circle(*point,radius=5,color = (0,100,200)))
     return points

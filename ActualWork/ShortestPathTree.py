@@ -205,8 +205,6 @@ def edgeParent(path_tree,v1,v2,funnel,cusp):
         cusp_proj_vert.edgeList.append(edge)
         cusp.childlist.append(cusp_proj_vert)
         edge.parent = cusp_proj_vert
-        #cusp.edgeList.append(edge)
-        #edge.parent = cusp
     elif ccw(funnel[cusp_index-1].cds(),cusp.cds(),cusp_proj):
         flag = True
         index = cusp_index-1
@@ -380,7 +378,10 @@ def path(polygon,path_tree,funnel,cusp,triang,visited_vertices):
     if edgeInTriang(polygon,triang,w.cds(),x.cds()):
         path(polygon,path_tree,F2,cuspF2,triang,visited_vertices)
 
-
+def shortest_path(polygon,v1,v2):
+    path_tree = shortest_path_tree(polygon,v1)
+    return [vert.cds() for vert in path_tree.vert_path(v2)]
+    
  
 # INFORMAL TESTING SECTION
 
@@ -391,6 +392,11 @@ def printEdges(root):
     print("for", root.cds(),":",root.edgeList)
     for child in root.childlist:
         printEdges(child)
+
+# def test2():
+#     polygon = [(450, 273), (361, 163), (588, 177), (446, 215), (593, 306), (420, 336)]
+#     print(shortest_path(polygon,(450,273),(593,306)))
+# test2()
 
 def test():
     polygon = [(0, 0), (0, 3), (1, 3), (1, 1),(3,1),(3,0)]

@@ -9,6 +9,16 @@ class PathTree:
         return self.root
     def print(self):
         self.root.printSubtree()
+    #input a point, tree will return list of vertices from root to leaf
+    def vert_path(self,destination):
+        path_list = []
+        dict = self.makeDictionary()
+        curr = dict[destination]
+        while curr != None:
+            path_list.append(curr)
+            curr = curr.parent
+        path_list.reverse()
+        return path_list
     def makeDictionary(self):
         dict = {}
         self.root.addDictionary(dict)
